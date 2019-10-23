@@ -3,22 +3,23 @@ classdef NBody < handle
     %   dim dimensions over time T in res timesteps.
     
     methods
-        function nb = NBody(T,resolution)
+        function nb = NBody(dim, T,resolution)
             % Initialise N-body system.
-            if nargin < 2
+            if nargin < 3
                 resolution = 20000;
             end;
-            if nargin < 1
+            if nargin < 2
                 T = 40;
             end;
             
+            nb.dim = dim
             nb.N = 0;
             nb.T = T;
             nb.res = resolution;
 
-            nb.xi = zeros(1,nb.N);
-            nb.pi = zeros(1,nb.N);
-            nb.m = zeros(1,nb.N);
+            nb.xi = zeros(dim,nb.N);
+            nb.pi = zeros(dim,nb.N);
+            nb.m = zeros(dim,nb.N);
         end
         
         % Add a body to the system:
@@ -37,6 +38,7 @@ classdef NBody < handle
     end
     
     properties (Access = private)
+        dim;        % dimensions
         N;          % Number of bodies
         T;          % Duration of simulation
         res;        % Timestep resolution

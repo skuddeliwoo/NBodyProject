@@ -1,7 +1,7 @@
 function clientNB()
 %clientNB: Client test-program for the NBody simulator.
 
-nb = NBody( 2.25, 10000);
+nb = NBody(2, 2.25, 10000);
 nb.addBody( -1, 0);
 nb.addBody( 1, 0);
 
