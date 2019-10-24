@@ -7,19 +7,19 @@ classdef NBody < handle
             % Initialise N-body system.
             if nargin < 3
                 resolution = 20000;
-            end;
+            end
             if nargin < 2
                 T = 40;
-            end;
+            end
             
-            nb.dim = dim
+            nb.dim = dim;
             nb.N = 0;
             nb.T = T;
             nb.res = resolution;
 
             nb.xi = zeros(dim,nb.N);
             nb.pi = zeros(dim,nb.N);
-            nb.m = zeros(dim,nb.N);
+            nb.m = zeros(nb.N);
         end
         
         % Add a body to the system:
@@ -27,18 +27,18 @@ classdef NBody < handle
             % TODO check if x and p are dim-dimensional
             if nargin < 4
                 m = 1;
-            end;
-            nb.xi = [nb.xi x];
-            nb.pi = [nb.pi p];
+            end
+            nb.xi = [nb.xi x.'];
+            nb.pi = [nb.pi p.'];
             nb.m = [nb.m m];
             nb.N = nb.N + 1;
-        end;
+        end
         
         % Run a simulation:
-        [t,x] = simulate(nb);
+        [t,x, p, f] = simulate(nb);
     end
     
-    properties (Access = private)
+    properties (Access = public)
         dim;        % dimensions
         N;          % Number of bodies
         T;          % Duration of simulation
