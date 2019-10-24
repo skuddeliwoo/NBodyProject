@@ -23,7 +23,8 @@ classdef NBody < handle
         end
         
         % Add a body to the system:
-        function nb = addBody( nb, x, p, m)
+        function nb = addBody(nb, x, p, m)
+            % TODO check if x and p are dim-dimensional
             if nargin < 4
                 m = 1;
             end;
@@ -34,7 +35,7 @@ classdef NBody < handle
         end;
         
         % Run a simulation:
-        [t,x] = simulate( nb);
+        [t,x] = simulate(nb);
     end
     
     properties (Access = private)

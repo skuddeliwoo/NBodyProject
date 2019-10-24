@@ -5,36 +5,36 @@ function [t,x,p] = simulate( nb)
 dt = nb.T/nb.res;
 t = 0:dt:nb.T;
 
-x = zeros(dim,nb.N,nb.res+1);
-p = zeros(dim,nb.N,nb.res+1);
+x = zeros(nb.dim,nb.N,nb.res+1);
+p = zeros(nb.dim,nb.N,nb.res+1);
 
 
-% whaz iz thiz  -  adjust to dim!
+% TODO whaz iz thiz  -  adjust to nb.dim!
 G = 1;
 Gmm = repmat(G*nb.m,[1 1 nb.N]);
 Gmm = Gmm .* permute(Gmm,[1 3 2]);
 
-% adjust to dim!
+% TODO adjust to nb.dim!
 % Relative positions of bodies at positions r:
 relPos = @(r) ...
     repmat(permute(r,[1 3 2]),[1 nb.N 1]) - ...
     repmat(r,[1 1 nb.N]);
 
 % Initialisation:
-x(dim,:,1) = nb.xi;
-p(dim,:,1) = nb.pi;
+x(nb.dim,:,1) = nb.xi;
+p(nb.dim,:,1) = nb.pi;
 
 % Simulation:
-for t = 1:nb.res
-    % Simulate timestep t:
-    x(dim,:,t+1) = x(dim,:,t) + dt * p(dim,:,t)./nb.m;
+for n = 1:nb.res
+    % Simulate timestep n:
+    x(nb.dim,:,n+1) = x(nb.dim,:,n) + dt * p(nb.dim,:,n)./nb.m;
     
-    diff = relPos(x(dim,:,t));
+    diff = relPos(x(nb.dim,:,n));
     absDiff = sqrt(sum(diff.*diff,1));
     invSq = absDiff.^3 + permute(eye(nb.N),[3 2 1]);
     forces = Gmm.*diff ./ invSq;
     forces = sum(forces,3);
-    p(dim,:,t+1) = p(dim,:,t) + forces * dt;
-end;
+    p(nb.dim,:,n+1) = p(nb.dim,:,n) + forces * dt;
+end
 
 end
