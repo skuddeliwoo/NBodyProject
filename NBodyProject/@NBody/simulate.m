@@ -9,7 +9,6 @@ x = zeros(nb.dim,nb.N,nb.res+1);
 p = zeros(nb.dim,nb.N,nb.res+1);
 f = zeros(nb.dim,nb.N,nb.res+1);
 
-
 G = 1;
 Gmm = repmat(G*nb.m,[1 1 nb.N]);
 Gmm = Gmm .* permute(Gmm,[1 3 2]);
@@ -26,7 +25,7 @@ p(:,:,1) = nb.pi;
 % Simulation:
 for n = 1:nb.res
     % Simulate timestep n:
-    x(:,:,n+1) = x(:,:,n) + dt * p(:,:,n)./nb.m;
+    % for rk: p/2 forces/2
     
     diff = relPos(x(:,:,n));
     
@@ -37,6 +36,10 @@ for n = 1:nb.res
     forces = sum(forces,3);
     f(:,:,n+1)=forces;
     p(:,:,n+1) = p(:,:,n) + forces * dt;
+    
+    tmpP = p(:,:,n) + forces * dt/2;
+    
+    x(:,:,n+1) = x(:,:,n) + dt * tmpP(:,:)./nb.m;
 end
 
 end
